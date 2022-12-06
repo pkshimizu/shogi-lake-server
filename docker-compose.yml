@@ -10,7 +10,7 @@ services:
     environment:
       ENV: local
       FLASK_APP: api/main
-    command: flask run --host=0.0.0.0
+    command: flask run --host=0.0.0.0 --debugger --reload
 
   db:
     image: mysql:latest
