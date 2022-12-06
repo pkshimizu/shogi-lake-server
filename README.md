@@ -30,7 +30,18 @@ docker-compose run api pytest
 ```
 
 ### マイグレーション
-T.B.D
+マイグレーションファイル生成
+```shell
+docker-compose run api flask db migrate
+```
+マイグレーション実行
+```shell
+docker-compose run api flask db upgrade
+```
+マイグレーションのロールバック
+```shell
+docker-compose run api flask db downgrade
+```
 
 ### APIドキュメント
 コンテナを起動して、 http://localhost:15000 を開く

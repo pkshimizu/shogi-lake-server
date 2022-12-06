@@ -11,6 +11,10 @@ services:
       ENV: local
       FLASK_APP: api/main
     command: flask run --host=0.0.0.0 --debugger --reload
+    networks:
+      - shogi_lake_nw
+    depends_on:
+      - db
 
   db:
     image: mysql:latest
