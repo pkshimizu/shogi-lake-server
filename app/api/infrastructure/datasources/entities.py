@@ -36,10 +36,21 @@ class Tournament(UidEntity):
 
 class Game(UidEntity):
     tournament_id = db.Column(db.Integer)
+    date = db.Column(db.Date)
     player1_id = db.Column(db.Integer)
     player2_id = db.Column(db.Integer)
     result = db.Column(db.Integer)
 
 
+class NewsProvider(UidEntity):
+    name = db.Column(db.String)
+
+
 class News(UidEntity):
-    pass
+    url = db.Column(db.String)
+    news_provider_id = db.Column(db.Integer)
+
+
+class NewsTag(UidEntity):
+    news_id = db.Column(db.Integer)
+    name = db.Column(db.String)
