@@ -2,6 +2,7 @@ from flask import Flask, Blueprint
 
 from app.api.config import load_config
 from app.api.database import setup_db
+from app.api.injector import setup_injector
 
 app = Flask(__name__)
 
@@ -12,6 +13,8 @@ v1 = Blueprint("v1", __name__, url_prefix="/v1")
 app.register_blueprint(v1)
 
 setup_db(app)
+
+setup_injector(app)
 
 
 @app.route("/")
