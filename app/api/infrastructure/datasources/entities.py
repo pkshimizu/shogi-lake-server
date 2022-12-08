@@ -25,6 +25,7 @@ class UidEntity(BaseEntity):
 class Player(UidEntity):
     name = db.Column(db.String)
     number = db.Column(db.Integer)
+    grade = db.Column(db.Integer)
     birthday = db.Column(db.Date)
     birthplace = db.Column(db.String)
     master_id = db.Column(db.Integer)
@@ -32,6 +33,8 @@ class Player(UidEntity):
 
 class Tournament(UidEntity):
     name = db.Column(db.String)
+    term = db.Column(db.Integer)
+    title_holder_player_id = db.Column(db.Integer)
 
 
 class Game(UidEntity):
