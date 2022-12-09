@@ -22,38 +22,59 @@ class UidEntity(BaseEntity):
     uid = db.Column(db.String(32), default=generate_uid)
 
 
-class Player(UidEntity):
-    name = db.Column(db.String)
+class Player(db.Model, UidEntity):
+    __tablename__ = "player"
+
+    name = db.Column(db.String(16), nullable=False)
     number = db.Column(db.Integer)
-    grade = db.Column(db.Integer)
-    birthday = db.Column(db.Date)
-    birthplace = db.Column(db.String)
+    grade_id = db.Column(db.Integer)
+    title = db.Column(db.String(16))
+    birthday = db.Column(db.Date, nullable=False)
+    birthplace = db.Column(db.String(16), nullable=False)
     master_id = db.Column(db.Integer)
 
 
-class Tournament(UidEntity):
-    name = db.Column(db.String)
-    term = db.Column(db.Integer)
+class PlayerGrade(db.Model, BaseEntity):
+    __tablename__ = "player_grade"
+
+    name = db.Column(db.String(16), nullable=False)
+    number = db.Column(db.Integer)
+    category = db.Column(db.Integer)
+
+
+class Tournament(db.Model, UidEntity):
+    __tablename__ = "tournament"
+
+    name = db.Column(db.String(32), nullable=False)
+    term = db.Column(db.Integer, nullable=False)
     title_holder_player_id = db.Column(db.Integer)
 
 
-class Game(UidEntity):
+class Game(db.Model, UidEntity):
+    __tablename__ = "game"
+
     tournament_id = db.Column(db.Integer)
-    date = db.Column(db.Date)
-    player1_id = db.Column(db.Integer)
-    player2_id = db.Column(db.Integer)
-    result = db.Column(db.Integer)
+    date = db.Column(db.Date, nullable=False)
+    player1_id = db.Column(db.Integer, nullable=False)
+    player2_id = db.Column(db.Integer, nullable=False)
+    result = db.Column(db.Integer, nullable=False)
 
 
-class NewsProvider(UidEntity):
-    name = db.Column(db.String)
+class NewsProvider(db.Model, UidEntity):
+    __tablename__ = "news_provider"
+
+    name = db.Column(db.String(16), nullable=False)
 
 
-class News(UidEntity):
-    url = db.Column(db.String)
-    news_provider_id = db.Column(db.Integer)
+class News(db.Model, UidEntity):
+    __tablename__ = "news"
+
+    url = db.Column(db.String(256), nullable=False)
+    news_provider_id = db.Column(db.Integer, nullable=False)
 
 
-class NewsTag(UidEntity):
-    news_id = db.Column(db.Integer)
-    name = db.Column(db.String)
+class NewsTag(db.Model, UidEntity):
+    __tablename__ = "news_tag"
+
+    news_id = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(32), nullable=False)
