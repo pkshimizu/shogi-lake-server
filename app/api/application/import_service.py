@@ -9,4 +9,5 @@ class ImportService:
         self.master_data_sheet_repository = master_data_sheet_repository
 
     def import_player(self) -> None:
-        self.master_data_sheet_repository.load_players()
+        players = self.master_data_sheet_repository.load_players()
+        print(players)

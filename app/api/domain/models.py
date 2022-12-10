@@ -33,3 +33,31 @@ class Player:
     master: Player
     grade: PlayerGrade
     title: str
+
+
+@dataclass
+class PlayerGradeRecord:
+    name: str
+    number: int
+    category: PlayerGradeCategory
+
+    @staticmethod
+    def parse(text: str) -> PlayerGradeRecord:
+        dan_list = ["初段", "二段", "三段", "四段", "五段", "六段", "七段", "八段", "九段"]
+        if text in dan_list:
+            num = dan_list.index(text)
+            return PlayerGradeRecord(
+                name=text, number=num + 1, category=PlayerGradeCategory.pro
+            )
+        raise Exception
+
+
+@dataclass
+class PlayerRecord:
+    name: str
+    number: int
+    birthday: date
+    birthplace: str
+    master_name: str
+    grade: PlayerGradeRecord
+    title: str
