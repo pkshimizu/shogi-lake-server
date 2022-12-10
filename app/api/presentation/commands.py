@@ -2,10 +2,15 @@ import click
 from flask import Flask
 from flask.cli import AppGroup
 
+from app.api.application import ImportService
+
 
 @click.command("player", help="Import Shogi Player")
 def import_player():
-    pass
+    from app.api.injector import injector
+
+    import_service = injector.get(ImportService)
+    import_service.import_player()
 
 
 def setup_commands(app: Flask):
