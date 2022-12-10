@@ -253,3 +253,6 @@ modules.xml
 
 ### Docker
 docker/db
+
+### ETC
+data
