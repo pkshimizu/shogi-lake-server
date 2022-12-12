@@ -42,13 +42,13 @@ class PlayerGradeRecord:
     category: PlayerGradeCategory
 
     @staticmethod
-    def parse(text: str) -> PlayerGradeRecord:
-        dan_list = ["初段", "二段", "三段", "四段", "五段", "六段", "七段", "八段", "九段"]
-        if text in dan_list:
-            num = dan_list.index(text)
-            return PlayerGradeRecord(
-                name=text, number=num + 1, category=PlayerGradeCategory.pro
-            )
+    def parse_category(text: str) -> PlayerGradeCategory:
+        if text == "棋士":
+            return PlayerGradeCategory.pro
+        if text == "女流棋士":
+            return PlayerGradeCategory.woman
+        if text == "アマチュア":
+            return PlayerGradeCategory.amateur
         raise Exception
 
 
@@ -59,5 +59,5 @@ class PlayerRecord:
     birthday: date
     birthplace: str
     master_name: str
-    grade: PlayerGradeRecord
+    grade: str
     title: str

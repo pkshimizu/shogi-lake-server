@@ -22,7 +22,7 @@ class UidEntity(BaseEntity):
     uid = db.Column(db.String(32), default=generate_uid)
 
 
-class Player(db.Model, UidEntity):
+class PlayerEntity(db.Model, UidEntity):
     __tablename__ = "player"
 
     name = db.Column(db.String(16), nullable=False)
@@ -34,7 +34,7 @@ class Player(db.Model, UidEntity):
     master_id = db.Column(db.Integer)
 
 
-class PlayerGrade(db.Model, BaseEntity):
+class PlayerGradeEntity(db.Model, BaseEntity):
     __tablename__ = "player_grade"
 
     name = db.Column(db.String(16), nullable=False)
@@ -42,7 +42,7 @@ class PlayerGrade(db.Model, BaseEntity):
     category = db.Column(db.Integer)
 
 
-class Tournament(db.Model, UidEntity):
+class TournamentEntity(db.Model, UidEntity):
     __tablename__ = "tournament"
 
     name = db.Column(db.String(32), nullable=False)
@@ -50,7 +50,7 @@ class Tournament(db.Model, UidEntity):
     title_holder_player_id = db.Column(db.Integer)
 
 
-class Game(db.Model, UidEntity):
+class GameEntity(db.Model, UidEntity):
     __tablename__ = "game"
 
     tournament_id = db.Column(db.Integer)
@@ -60,20 +60,20 @@ class Game(db.Model, UidEntity):
     result = db.Column(db.Integer, nullable=False)
 
 
-class NewsProvider(db.Model, UidEntity):
+class NewsProviderEntity(db.Model, UidEntity):
     __tablename__ = "news_provider"
 
     name = db.Column(db.String(16), nullable=False)
 
 
-class News(db.Model, UidEntity):
+class NewsEntity(db.Model, UidEntity):
     __tablename__ = "news"
 
     url = db.Column(db.String(256), nullable=False)
     news_provider_id = db.Column(db.Integer, nullable=False)
 
 
-class NewsTag(db.Model, UidEntity):
+class NewsTagEntity(db.Model, UidEntity):
     __tablename__ = "news_tag"
 
     news_id = db.Column(db.Integer, nullable=False)
