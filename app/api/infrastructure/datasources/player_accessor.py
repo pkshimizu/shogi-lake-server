@@ -8,8 +8,8 @@ class PlayerAccessor(PlayerRepository):
     def save_from_records(self, player_records: list[PlayerRecord]):
         player_entities = PlayerEntity.query.all()
         grade_entities = PlayerGradeEntity.query.all()
+        players = []
         for player_record in player_records:
-            grade_record = player_record.grade
             player_entity = next(
                 filter(
                     lambda entity: entity.number == player_record.number,
@@ -25,9 +25,9 @@ class PlayerAccessor(PlayerRepository):
             player_entity.birthplace = player_record.birthplace
             player_entity.grade = next(
                 filter(
-                    lambda entity: entity.number == grade_record.number
-                    and entity.category == grade_record.category.value,
-                    grade_entities,
+                    lambda entity: entity.name == player_record.grade, grade_entities
                 )
             )
             player_entity.title = player_record.title
+            players.append(player_entity)
+        db.session.add_all(players)

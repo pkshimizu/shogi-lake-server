@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import gspread
 from gspread import Spreadsheet
 
@@ -30,7 +32,7 @@ class MasterDataSheetAccessor(MasterDataSheetRepository):
                 PlayerRecord(
                     name=record["氏名"],
                     number=record["棋士番号"],
-                    birthday=record["生年月日"],
+                    birthday=datetime.strptime(record["生年月日"], "%Y年%m月%d日"),
                     birthplace=record["出身地"],
                     master_name=record["師匠"],
                     grade=record["段位"],
