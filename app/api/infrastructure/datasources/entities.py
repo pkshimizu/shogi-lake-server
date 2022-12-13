@@ -27,11 +27,12 @@ class PlayerEntity(db.Model, UidEntity):
 
     name = db.Column(db.String(16), nullable=False)
     number = db.Column(db.Integer)
-    grade_id = db.Column(db.Integer)
+    grade_id = db.Column(db.Integer, db.ForeignKey("player_grade.id"))
+    grade = db.relationship("PlayerGradeEntity", lazy="joined", innerjoin=True)
     title = db.Column(db.String(16))
     birthday = db.Column(db.Date, nullable=False)
     birthplace = db.Column(db.String(16), nullable=False)
-    master_id = db.Column(db.Integer)
+    master_id = db.Column(db.Integer, db.ForeignKey("player.id"))
 
 
 class PlayerGradeEntity(db.Model, BaseEntity):
@@ -40,6 +41,7 @@ class PlayerGradeEntity(db.Model, BaseEntity):
     name = db.Column(db.String(16), nullable=False)
     number = db.Column(db.Integer)
     category = db.Column(db.Integer)
+    players = db.relationship("PlayerEntity", back_populates="grade")
 
 
 class TournamentEntity(db.Model, UidEntity):
@@ -70,11 +72,16 @@ class NewsEntity(db.Model, UidEntity):
     __tablename__ = "news"
 
     url = db.Column(db.String(256), nullable=False)
-    news_provider_id = db.Column(db.Integer, nullable=False)
+    news_provider_id = db.Column(
+        db.Integer, db.ForeignKey("news_provider.id"), nullable=False
+    )
+    news_provider = db.relationship("NewsProviderEntity", lazy="joined", innerjoin=True)
+    news_tags = db.relationship("NewsTagEntity", lazy="joined", innerjoin=True)
 
 
 class NewsTagEntity(db.Model, UidEntity):
     __tablename__ = "news_tag"
 
-    news_id = db.Column(db.Integer, nullable=False)
+    news_id = db.Column(db.Integer, db.ForeignKey("news.id"), nullable=False)
+    news_list = db.relationship("NewsEntity", back_populates="news_tags")
     name = db.Column(db.String(32), nullable=False)
