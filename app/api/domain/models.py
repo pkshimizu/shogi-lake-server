@@ -61,3 +61,11 @@ class PlayerRecord:
     master_name: str
     grade: str
     title: str
+
+
+@dataclass
+class TournamentTermRecord:
+    name: str
+    is_official: bool
+    term: int
+    title_holder_player_name: str

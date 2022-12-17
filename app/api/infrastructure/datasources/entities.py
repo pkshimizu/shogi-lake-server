@@ -56,7 +56,9 @@ class TournamentTermEntity(db.Model, UidEntity):
     __tablename__ = "tournament_term"
 
     tournament_id = db.Column(db.Integer, db.ForeignKey("tournament.id"))
-    tournament = db.relationship("TournamentEntity", back_populates="terms")
+    tournament = db.relationship(
+        "TournamentEntity", back_populates="terms", lazy="joined", innerjoin=True
+    )
     term = db.Column(db.Integer, nullable=False)
     title_holder_player_id = db.Column(db.Integer)
 

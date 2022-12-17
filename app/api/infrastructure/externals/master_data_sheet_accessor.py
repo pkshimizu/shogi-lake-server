@@ -3,7 +3,7 @@ from datetime import datetime
 import gspread
 from gspread import Spreadsheet
 
-from app.api.domain.models import PlayerRecord, PlayerGradeRecord
+from app.api.domain.models import PlayerRecord, PlayerGradeRecord, TournamentTermRecord
 from app.api.domain.repositories import MasterDataSheetRepository
 from google.oauth2.service_account import Credentials
 
@@ -41,6 +41,21 @@ class MasterDataSheetAccessor(MasterDataSheetRepository):
             )
 
         return players
+
+    def load_tournaments(self) -> list[TournamentTermRecord]:
+        workbook = self.__open_workbook("MASTER_DATA_SHEET_ID")
+        sheet = workbook.worksheet("棋戦一覧")
+        tournaments = []
+        for record in sheet.get_all_records():
+            tournaments.append(
+                TournamentTermRecord(
+                    name=record["棋戦名"],
+                    is_official=record["公式"] == "TRUE",
+                    term=record["期"],
+                    title_holder_player_name=record["タイトルホルダー"],
+                )
+            )
+        return tournaments
 
     @staticmethod
     def __open_workbook(workbook_key: str) -> Spreadsheet:
