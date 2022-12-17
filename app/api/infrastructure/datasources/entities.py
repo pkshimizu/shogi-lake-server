@@ -49,6 +49,7 @@ class TournamentEntity(db.Model, UidEntity):
 
     name = db.Column(db.String(32), nullable=False)
     terms = db.relationship("TournamentTermEntity", back_populates="tournament")
+    is_official = db.Column(db.Boolean)
 
 
 class TournamentTermEntity(db.Model, UidEntity):
