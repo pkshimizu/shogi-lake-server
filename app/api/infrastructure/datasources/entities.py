@@ -48,6 +48,14 @@ class TournamentEntity(db.Model, UidEntity):
     __tablename__ = "tournament"
 
     name = db.Column(db.String(32), nullable=False)
+    terms = db.relationship("TournamentTermEntity", back_populates="tournament")
+
+
+class TournamentTermEntity(db.Model, UidEntity):
+    __tablename__ = "tournament_term"
+
+    tournament_id = db.Column(db.Integer, db.ForeignKey("tournament.id"))
+    tournament = db.relationship("TournamentEntity", back_populates="terms")
     term = db.Column(db.Integer, nullable=False)
     title_holder_player_id = db.Column(db.Integer)
 
