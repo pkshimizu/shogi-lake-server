@@ -77,17 +77,20 @@ class NewsProviderEntity(db.Model, UidEntity):
     __tablename__ = "news_provider"
 
     name = db.Column(db.String(16), nullable=False)
+    rss_url = db.Column(db.String(256), nullable=True)
 
 
 class NewsEntity(db.Model, UidEntity):
     __tablename__ = "news"
 
+    title = db.Column(db.String(256), nullable=False)
     url = db.Column(db.String(256), nullable=False)
     news_provider_id = db.Column(
         db.Integer, db.ForeignKey("news_provider.id"), nullable=False
     )
     news_provider = db.relationship("NewsProviderEntity", lazy="joined", innerjoin=True)
     news_tags = db.relationship("NewsTagEntity", lazy="joined", innerjoin=True)
+    published_at = db.Column(db.DateTime, nullable=False)
 
 
 class NewsTagEntity(db.Model, UidEntity):
