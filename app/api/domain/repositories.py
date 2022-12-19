@@ -1,6 +1,11 @@
 from abc import ABCMeta, abstractmethod
 
-from app.api.domain.models import PlayerRecord, PlayerGradeRecord, TournamentTermRecord
+from app.api.domain.models import (
+    PlayerRecord,
+    PlayerGradeRecord,
+    TournamentTermRecord,
+    News,
+)
 
 
 class MasterDataSheetRepository(metaclass=ABCMeta):
@@ -32,4 +37,16 @@ class PlayerRepository(metaclass=ABCMeta):
 class TournamentRepository(metaclass=ABCMeta):
     @abstractmethod
     def save_from_records(self, tournament_term_records: list[TournamentTermRecord]):
+        pass
+
+
+class RssRepository(metaclass=ABCMeta):
+    @abstractmethod
+    def load_news(self, url: str) -> list[News]:
+        pass
+
+
+class ScrapingRepository(metaclass=ABCMeta):
+    @abstractmethod
+    def scribe_from_site(self, url: str) -> list[News]:
         pass

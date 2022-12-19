@@ -69,3 +69,18 @@ class TournamentTermRecord:
     is_official: bool
     term: int
     title_holder_player_name: str
+
+
+@dataclass
+class NewsProvider:
+    uid: str
+    name: str
+
+
+@dataclass
+class News:
+    uid: str
+    url: str
+    title: str
+    published_at: datetime
+    provider: NewsProvider
