@@ -84,3 +84,11 @@ class News:
     title: str
     published_at: datetime
     provider: NewsProvider
+
+
+@dataclass
+class NewsEntry:
+    url: str
+    title: str
+    published_at: datetime
+    provider_uid: str

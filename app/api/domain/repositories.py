@@ -5,6 +5,7 @@ from app.api.domain.models import (
     PlayerGradeRecord,
     TournamentTermRecord,
     News,
+    NewsEntry,
 )
 
 
@@ -42,7 +43,7 @@ class TournamentRepository(metaclass=ABCMeta):
 
 class RssRepository(metaclass=ABCMeta):
     @abstractmethod
-    def load_news(self, url: str) -> list[News]:
+    def load_news(self, url: str, provider_uid: str) -> list[NewsEntry]:
         pass
 
 
