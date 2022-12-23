@@ -51,3 +51,9 @@ class ScrapingRepository(metaclass=ABCMeta):
     @abstractmethod
     def scribe_from_site(self, url: str) -> list[News]:
         pass
+
+
+class NewsTagRepository(metaclass=ABCMeta):
+    @abstractmethod
+    def save_tags(self, names: list[str]):
+        pass
