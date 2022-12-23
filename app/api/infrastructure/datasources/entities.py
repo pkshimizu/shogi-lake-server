@@ -80,6 +80,14 @@ class NewsProviderEntity(db.Model, UidEntity):
     rss_url = db.Column(db.String(256), nullable=True)
 
 
+news_news_tag_table = db.Table(
+    "news_news_tag",
+    db.metadata,
+    db.Column("news_id", db.Integer, db.ForeignKey("news.id")),
+    db.Column("news_tag_id", db.Integer, db.ForeignKey("news_tag.id")),
+)
+
+
 class NewsEntity(db.Model, UidEntity):
     __tablename__ = "news"
 
@@ -89,13 +97,16 @@ class NewsEntity(db.Model, UidEntity):
         db.Integer, db.ForeignKey("news_provider.id"), nullable=False
     )
     news_provider = db.relationship("NewsProviderEntity", lazy="joined", innerjoin=True)
-    news_tags = db.relationship("NewsTagEntity", lazy="joined", innerjoin=True)
+    news_tags = db.relationship(
+        "NewsTagEntity", secondary=news_news_tag_table, back_populates="news_list"
+    )
     published_at = db.Column(db.DateTime, nullable=False)
 
 
 class NewsTagEntity(db.Model, UidEntity):
     __tablename__ = "news_tag"
 
-    news_id = db.Column(db.Integer, db.ForeignKey("news.id"), nullable=False)
-    news_list = db.relationship("NewsEntity", back_populates="news_tags")
+    news_list = db.relationship(
+        "NewsEntity", secondary=news_news_tag_table, back_populates="news_tags"
+    )
     name = db.Column(db.String(32), nullable=False)

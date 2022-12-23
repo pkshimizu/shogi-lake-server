@@ -84,6 +84,13 @@ class News:
     title: str
     published_at: datetime
     provider: NewsProvider
+    tags: list[NewsTag]
+
+
+@dataclass
+class NewsTag:
+    uid: str
+    name: str
 
 
 @dataclass
