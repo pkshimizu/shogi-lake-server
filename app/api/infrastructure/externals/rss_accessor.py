@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app.api.domain.models import NewsEntry
 from app.api.domain.repositories import RssRepository
 import feedparser
@@ -10,8 +12,12 @@ class RssAccessor(RssRepository):
             NewsEntry(
                 url=entry.link,
                 title=entry.title,
-                published_at=entry.updated,
+                published_at=self.__to_datetime_from_str(entry.updated),
                 provider_uid=provider_uid,
             )
             for entry in feed.entries
         ]
+
+    @staticmethod
+    def __to_datetime_from_str(value: str) -> datetime:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))

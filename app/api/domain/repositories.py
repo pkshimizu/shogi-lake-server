@@ -54,6 +54,12 @@ class ScrapingRepository(metaclass=ABCMeta):
         pass
 
 
+class NewsRepository(metaclass=ABCMeta):
+    @abstractmethod
+    def save_news(self, news: NewsEntry, news_tags: list[NewsTag]):
+        pass
+
+
 class NewsTagRepository(metaclass=ABCMeta):
     @abstractmethod
     def save_tags(self, names: list[str]):
