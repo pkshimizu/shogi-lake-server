@@ -4,8 +4,8 @@ from app.api.domain.models import (
     PlayerRecord,
     PlayerGradeRecord,
     TournamentTermRecord,
-    News,
     NewsEntry,
+    NewsTag,
 )
 
 
@@ -49,11 +49,14 @@ class RssRepository(metaclass=ABCMeta):
 
 class ScrapingRepository(metaclass=ABCMeta):
     @abstractmethod
-    def scribe_from_site(self, url: str) -> list[News]:
+    def scribe_from_site(self, url: str) -> list[NewsEntry]:
         pass
 
 
 class NewsTagRepository(metaclass=ABCMeta):
     @abstractmethod
     def save_tags(self, names: list[str]):
+        pass
+
+    def get_all(self) -> list[NewsTag]:
         pass
