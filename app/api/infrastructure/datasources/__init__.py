@@ -5,7 +5,9 @@ from app.api.domain.repositories import (
     PlayerGradeRepository,
     TournamentRepository,
     NewsTagRepository,
+    NewsProviderRepository,
 )
+from app.api.infrastructure.datasources.NewsProviderAccessor import NewsProviderAccessor
 from app.api.infrastructure.datasources.news_tag_accessor import NewsTagAccessor
 from app.api.infrastructure.datasources.player_accessor import PlayerAccessor
 from app.api.infrastructure.datasources.player_grade_accessor import PlayerGradeAccessor
@@ -18,3 +20,4 @@ class DatasourceModule(Module):
         binder.bind(PlayerRepository, to=PlayerAccessor)
         binder.bind(TournamentRepository, to=TournamentAccessor)
         binder.bind(NewsTagRepository, to=NewsTagAccessor)
+        binder.bind(NewsProviderRepository, to=NewsProviderAccessor)

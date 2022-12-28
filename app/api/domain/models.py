@@ -73,8 +73,13 @@ class TournamentTermRecord:
 
 @dataclass
 class NewsProvider:
+    SHOGI_FEDERATION_UID = "NQGm4DJ8cvUj5cdMDz7mst"
+    YOMIURI_NEWS_UID = "epcBcsWbRRvJhppsDhVGJ7"
+    ASAHI_NEWS_UID = "fA6h5aA9wF8U4M5c2TwRNB"
+
     uid: str
     name: str
+    rss_url: str
 
 
 @dataclass

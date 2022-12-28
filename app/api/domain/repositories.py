@@ -6,6 +6,7 @@ from app.api.domain.models import (
     TournamentTermRecord,
     NewsEntry,
     NewsTag,
+    NewsProvider,
 )
 
 
@@ -59,4 +60,10 @@ class NewsTagRepository(metaclass=ABCMeta):
         pass
 
     def get_all(self) -> list[NewsTag]:
+        pass
+
+
+class NewsProviderRepository(metaclass=ABCMeta):
+    @abstractmethod
+    def get_by_uid(self, uid: str) -> NewsProvider:
         pass

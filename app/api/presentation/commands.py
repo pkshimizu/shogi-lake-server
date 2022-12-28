@@ -34,6 +34,7 @@ def collect_news():
     from app.api.injector import injector
 
     news_collect_service = injector.get(NewsCollectService)
+    news_collect_service.collect_shogi_federation()
     news_collect_service.collect_yomiuri_news()
     news_collect_service.collect_asahi_news()
 
