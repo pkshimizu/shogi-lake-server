@@ -50,7 +50,15 @@ class RssRepository(metaclass=ABCMeta):
 
 class ScrapingRepository(metaclass=ABCMeta):
     @abstractmethod
-    def scribe_from_site(self, url: str, provider_uid: str) -> list[NewsEntry]:
+    def scribe_from_site(
+        self,
+        url: str,
+        url_xpath: str,
+        title_xpath: str,
+        date_xpath: str,
+        date_format: str,
+        provider_uid: str,
+    ) -> list[NewsEntry]:
         pass
 
 

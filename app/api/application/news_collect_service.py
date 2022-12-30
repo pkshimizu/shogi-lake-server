@@ -72,7 +72,15 @@ class NewsCollectService:
     @transaction
     def collect_mainichi_news(self):
         news_list = self.scraping_repository.scribe_from_site(
-            "https://mainichi.jp/shogi/", NewsProvider.MAINICHI_NEWS_UID
+            "https://mainichi.jp/shogi/",
+            "//*[@id='article-list']/ul/li/a",
+            "//*[@id='article-list']/ul/li/a"
+            "/div[@class='articlelist-item']/div[@class='articlelist-detail']/h3",
+            "//*[@id='article-list']/ul/li/a"
+            "/div[@class='articlelist-item']/div[@class='articlelist-detail']"
+            "/div[@class='articletag mb-8']/span[contains(@class,'articletag-date')]",
+            "%Y/%m/%d %H:%M",
+            NewsProvider.MAINICHI_NEWS_UID,
         )
         registered_news_tags = self.news_tag_repository.get_all()
         for news in news_list:
