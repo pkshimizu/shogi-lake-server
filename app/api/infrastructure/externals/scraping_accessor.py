@@ -2,7 +2,6 @@ from app.api.domain.models import NewsEntry
 from app.api.domain.repositories import ScrapingRepository
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome import service as fs
 
 
 class ScrapingAccessor(ScrapingRepository):
@@ -13,9 +12,10 @@ class ScrapingAccessor(ScrapingRepository):
         options.add_argument("--headless")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
+        options.binary_location = "/usr/bin/google-chrome"
 
-        chrome_service = fs.Service(executable_path=self.CHROMEDRIVER)
-        driver = webdriver.Chrome(service=chrome_service, options=options)
+        driver = webdriver.Chrome(executable_path=self.CHROMEDRIVER, chrome_options=options)
 
         driver.get(url)
+        driver.quit()
         return []

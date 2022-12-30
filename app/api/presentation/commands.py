@@ -37,7 +37,6 @@ def collect_news():
     news_collect_service.collect_shogi_federation()
     news_collect_service.collect_yomiuri_news()
     news_collect_service.collect_asahi_news()
-    news_collect_service.collect_mainichi_news()
 
 
 def setup_commands(app: Flask):
