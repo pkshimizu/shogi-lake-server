@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from injector import inject
 
 from app.api.application.decorators import transaction
@@ -69,7 +67,6 @@ class NewsCollectService:
             "//*[@id='article-list']/ul/li/a"
             "/div[@class='articlelist-item']/div[@class='articlelist-detail']"
             "/div[@class='articletag mb-8']/span[contains(@class,'articletag-date')]",
-            lambda text: datetime.strptime(text, "%Y/%m/%d %H:%M"),
             NewsProvider.MAINICHI_NEWS_UID,
         )
         self.__save_news(news_list)
@@ -89,7 +86,6 @@ class NewsCollectService:
             "/ul[@class='categoryArchiveList']"
             "/li[@class='categoryArchiveItem']/a"
             "/div[@class='categoryArchiveItemDate']",
-            self.__convert_datetime_for_hokkaido_news,
             NewsProvider.HOKKAIDO_NEWS_UID,
         )
         self.__save_news(news_list)
@@ -104,10 +100,3 @@ class NewsCollectService:
     @staticmethod
     def __make_tags(news_entry: NewsEntry, news_tags: list[NewsTag]) -> list[NewsTag]:
         return list(filter(lambda tag: tag.name in news_entry.title, news_tags))
-
-    @staticmethod
-    def __convert_datetime_for_hokkaido_news(text: str) -> datetime:
-        if "更新" in text:
-            return datetime.strptime(text, "%m/%d %H:%M 更新")
-        else:
-            return datetime.strptime(text, "%m/%d %H:%M")

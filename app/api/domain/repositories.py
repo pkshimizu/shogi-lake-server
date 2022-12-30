@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-from types import FunctionType
 
 from app.api.domain.models import (
     PlayerRecord,
@@ -57,7 +56,6 @@ class ScrapingRepository(metaclass=ABCMeta):
         url_xpath: str,
         title_xpath: str,
         date_xpath: str,
-        date_converter: FunctionType,
         provider_uid: str,
     ) -> list[NewsEntry]:
         pass
