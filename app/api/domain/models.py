@@ -77,6 +77,7 @@ class NewsProvider:
     YOMIURI_NEWS_UID = "epcBcsWbRRvJhppsDhVGJ7"
     ASAHI_NEWS_UID = "fA6h5aA9wF8U4M5c2TwRNB"
     MAINICHI_NEWS_UID = "T3xP2k4s6HGeaUN6oGxcaN"
+    HOKKAIDO_NEWS_UID = "matpnAvrde8EFXVXm4oxZs"
 
     uid: str
     name: str

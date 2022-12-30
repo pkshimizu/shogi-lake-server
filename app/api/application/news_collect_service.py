@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from injector import inject
 
 from app.api.application.decorators import transaction
@@ -36,11 +38,7 @@ class NewsCollectService:
             url=provider.rss_url,
             provider_uid=provider.uid,
         )
-        registered_news_tags = self.news_tag_repository.get_all()
-        for news in news_list:
-            news_tags = self.__make_tags(news, registered_news_tags)
-            if len(news_tags) > 0:
-                self.news_repository.save_news(news, news_tags)
+        self.__save_news(news_list)
 
     @transaction
     def collect_yomiuri_news(self):
@@ -51,11 +49,7 @@ class NewsCollectService:
             url=provider.rss_url,
             provider_uid=provider.uid,
         )
-        registered_news_tags = self.news_tag_repository.get_all()
-        for news in news_list:
-            news_tags = self.__make_tags(news, registered_news_tags)
-            if len(news_tags) > 0:
-                self.news_repository.save_news(news, news_tags)
+        self.__save_news(news_list)
 
     @transaction
     def collect_asahi_news(self):
@@ -63,11 +57,7 @@ class NewsCollectService:
         news_list = self.rss_repository.load_news(
             url=provider.rss_url, provider_uid=provider.uid
         )
-        registered_news_tags = self.news_tag_repository.get_all()
-        for news in news_list:
-            news_tags = self.__make_tags(news, registered_news_tags)
-            if len(news_tags) > 0:
-                self.news_repository.save_news(news, news_tags)
+        self.__save_news(news_list)
 
     @transaction
     def collect_mainichi_news(self):
@@ -79,9 +69,32 @@ class NewsCollectService:
             "//*[@id='article-list']/ul/li/a"
             "/div[@class='articlelist-item']/div[@class='articlelist-detail']"
             "/div[@class='articletag mb-8']/span[contains(@class,'articletag-date')]",
-            "%Y/%m/%d %H:%M",
+            lambda text: datetime.strptime(text, "%Y/%m/%d %H:%M"),
             NewsProvider.MAINICHI_NEWS_UID,
         )
+        self.__save_news(news_list)
+
+    @transaction
+    def collect_hokkaido_news(self):
+        news_list = self.scraping_repository.scribe_from_site(
+            "https://www.hokkaido-np.co.jp/search/?kw=%E5%B0%86%E6%A3%8B",
+            "//*[@id='content']/div[@class='categoryArchive']"
+            "/ul[@class='categoryArchiveList']"
+            "/li[@class='categoryArchiveItem']/a",
+            "//*[@id='content']/div[@class='categoryArchive']"
+            "/ul[@class='categoryArchiveList']"
+            "/li[@class='categoryArchiveItem']/a"
+            "/div[@class='categoryArchiveItemTitle']",
+            "//*[@id='content']/div[@class='categoryArchive']"
+            "/ul[@class='categoryArchiveList']"
+            "/li[@class='categoryArchiveItem']/a"
+            "/div[@class='categoryArchiveItemDate']",
+            self.__convert_datetime_for_hokkaido_news,
+            NewsProvider.HOKKAIDO_NEWS_UID,
+        )
+        self.__save_news(news_list)
+
+    def __save_news(self, news_list):
         registered_news_tags = self.news_tag_repository.get_all()
         for news in news_list:
             news_tags = self.__make_tags(news, registered_news_tags)
@@ -91,3 +104,10 @@ class NewsCollectService:
     @staticmethod
     def __make_tags(news_entry: NewsEntry, news_tags: list[NewsTag]) -> list[NewsTag]:
         return list(filter(lambda tag: tag.name in news_entry.title, news_tags))
+
+    @staticmethod
+    def __convert_datetime_for_hokkaido_news(text: str) -> datetime:
+        if "更新" in text:
+            return datetime.strptime(text, "%m/%d %H:%M 更新")
+        else:
+            return datetime.strptime(text, "%m/%d %H:%M")

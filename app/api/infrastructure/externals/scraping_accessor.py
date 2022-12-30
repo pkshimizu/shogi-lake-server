@@ -1,4 +1,4 @@
-from datetime import datetime
+from types import FunctionType
 
 import requests
 
@@ -17,7 +17,7 @@ class ScrapingAccessor(ScrapingRepository):
         url_xpath: str,
         title_xpath: str,
         date_xpath: str,
-        date_format: str,
+        date_converter: FunctionType,
         provider_uid: str,
     ) -> list[NewsEntry]:
         response = requests.get(url)
@@ -26,15 +26,17 @@ class ScrapingAccessor(ScrapingRepository):
         url_list = dom.xpath(url_xpath)
         title_list = dom.xpath(title_xpath)
         published_at_list = dom.xpath(date_xpath)
+        if not (len(url_list) == len(title_list) == len(published_at_list)):
+            print(len(url_list))
+            print(len(title_list))
+            print(len(published_at_list))
         news_entries = []
         for index, url in enumerate(url_list):
             news_entries.append(
                 NewsEntry(
                     url=url.get("href"),
-                    title=title_list[index].text,
-                    published_at=datetime.strptime(
-                        published_at_list[index].text, date_format
-                    ),
+                    title=title_list[index].text.strip(),
+                    published_at=date_converter(published_at_list[index].text.strip()),
                     provider_uid=provider_uid,
                 )
             )
