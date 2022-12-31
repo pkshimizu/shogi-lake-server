@@ -1,7 +1,13 @@
 from injector import inject
 
 from app.api.application.decorators import transaction
-from app.api.domain.models import NewsEntry, NewsTag, NewsProvider
+from app.api.domain.models import (
+    NewsEntry,
+    NewsTag,
+    NewsProvider,
+    MainichiNewsEntry,
+    HokkaidoNewsEntry,
+)
 from app.api.domain.repositories import (
     RssRepository,
     ScrapingRepository,
@@ -67,6 +73,7 @@ class NewsCollectService:
             "//*[@id='article-list']/ul/li/a"
             "/div[@class='articlelist-item']/div[@class='articlelist-detail']"
             "/div[@class='articletag mb-8']/span[contains(@class,'articletag-date')]",
+            MainichiNewsEntry,
             NewsProvider.MAINICHI_NEWS_UID,
         )
         self.__save_news(news_list)
@@ -86,6 +93,7 @@ class NewsCollectService:
             "/ul[@class='categoryArchiveList']"
             "/li[@class='categoryArchiveItem']/a"
             "/div[@class='categoryArchiveItemDate']",
+            HokkaidoNewsEntry,
             NewsProvider.HOKKAIDO_NEWS_UID,
         )
         self.__save_news(news_list)

@@ -1,7 +1,10 @@
 from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime, date
 from enum import IntEnum
+
+from dateutil.relativedelta import relativedelta
 
 
 class PlayerGradeCategory(IntEnum):
@@ -102,7 +105,55 @@ class NewsTag:
 
 @dataclass
 class NewsEntry:
+    def __init__(self, url: str, title: str, published_at: str, provider_uid: str):
+        self.url = self.convert_url(url)
+        self.title = self.convert_title(title)
+        self.published_at = self.convert_published_at(published_at)
+        self.provider_uid = provider_uid
+
     url: str
     title: str
     published_at: datetime
     provider_uid: str
+
+    @staticmethod
+    def convert_url(url: str) -> str:
+        return url
+
+    @staticmethod
+    def convert_title(title: str) -> str:
+        return title
+
+    @staticmethod
+    def convert_published_at(published_at: str | datetime) -> datetime:
+        if type(published_at) is datetime:
+            return published_at
+        return datetime.strptime(published_at, "%Y/%m/%d %H:%M")
+
+
+class MainichiNewsEntry(NewsEntry):
+    @staticmethod
+    def convert_url(url: str) -> str:
+        return f"https:{url}"
+
+    @staticmethod
+    def convert_published_at(published_at: str) -> datetime:
+        return datetime.strptime(published_at, "%Y/%m/%d %H:%M")
+
+
+class HokkaidoNewsEntry(NewsEntry):
+    @staticmethod
+    def convert_url(url: str) -> str:
+        return f"https://www.hokkaido-np.co.jp{url}"
+
+    @staticmethod
+    def convert_published_at(text: str) -> datetime:
+        today = datetime.today()
+        text = f"{today.year}/{text}"
+        if "更新" in text:
+            published_at = datetime.strptime(text, "%Y/%m/%d %H:%M 更新")
+        else:
+            published_at = datetime.strptime(text, "%Y/%m/%d %H:%M")
+        if published_at > today:
+            published_at = published_at - relativedelta(years=1)
+        return published_at

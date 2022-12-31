@@ -56,6 +56,7 @@ class ScrapingRepository(metaclass=ABCMeta):
         url_xpath: str,
         title_xpath: str,
         date_xpath: str,
+        news_entry_type: type[NewsEntry],
         provider_uid: str,
     ) -> list[NewsEntry]:
         pass
