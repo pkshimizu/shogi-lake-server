@@ -33,7 +33,6 @@ class Player:
     number: int
     birthday: date
     birthplace: str
-    master: Player
     grade: PlayerGrade
     title: str
 

@@ -3,7 +3,13 @@ from datetime import datetime
 import shortuuid
 
 from app.api.database import db
-from app.api.domain.models import News, NewsProvider, NewsTag
+from app.api.domain.models import (
+    News,
+    NewsProvider,
+    NewsTag,
+    Player,
+    PlayerGrade,
+)
 
 
 class BaseEntity:
@@ -35,6 +41,20 @@ class PlayerEntity(db.Model, UidEntity):
     birthplace = db.Column(db.String(16), nullable=False)
     master_id = db.Column(db.Integer, db.ForeignKey("player.id"))
 
+    def to_model(self) -> Player:
+        return Player(
+            id=self.id,
+            uid=self.uid,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+            name=self.name,
+            number=self.number,
+            birthday=self.birthday,
+            birthplace=self.birthplace,
+            grade=self.grade.to_model(),
+            title=self.title,
+        )
+
 
 class PlayerGradeEntity(db.Model, BaseEntity):
     __tablename__ = "player_grade"
@@ -43,6 +63,16 @@ class PlayerGradeEntity(db.Model, BaseEntity):
     number = db.Column(db.Integer)
     category = db.Column(db.Integer)
     players = db.relationship("PlayerEntity", back_populates="grade")
+
+    def to_model(self):
+        return PlayerGrade(
+            id=self.id,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+            name=self.name,
+            number=self.number,
+            category=self.category.to_model(),
+        )
 
 
 class TournamentEntity(db.Model, UidEntity):
