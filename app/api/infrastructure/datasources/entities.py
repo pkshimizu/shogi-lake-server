@@ -93,6 +93,7 @@ class NewsEntity(db.Model, UidEntity):
 
     title = db.Column(db.String(256), nullable=False)
     url = db.Column(db.String(256), nullable=False)
+    image_url = db.Column(db.String(256), nullable=True)
     news_provider_id = db.Column(
         db.Integer, db.ForeignKey("news_provider.id"), nullable=False
     )
