@@ -62,6 +62,10 @@ class ScrapingRepository(metaclass=ABCMeta):
     ) -> list[NewsEntry]:
         pass
 
+    @abstractmethod
+    def scribe_image_from_site(self, url: str) -> str | None:
+        pass
+
 
 class NewsRepository(metaclass=ABCMeta):
     @abstractmethod
@@ -70,6 +74,10 @@ class NewsRepository(metaclass=ABCMeta):
 
     @abstractmethod
     def get_all_no_image(self) -> list[News]:
+        pass
+
+    @abstractmethod
+    def save_image(self, news_id: int, image_url: str):
         pass
 
 

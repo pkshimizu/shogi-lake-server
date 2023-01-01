@@ -139,6 +139,7 @@ class NewsEntity(db.Model, UidEntity):
 
     def to_model(self):
         return News(
+            id=self.id,
             uid=self.uid,
             url=self.url,
             title=self.title,

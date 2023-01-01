@@ -88,6 +88,7 @@ class NewsProvider:
 
 @dataclass
 class News:
+    id: int
     uid: str
     url: str
     title: str

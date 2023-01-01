@@ -30,6 +30,10 @@ class NewsAccessor(NewsRepository):
         entities = NewsEntity.query.filter_by(image_url=None).all()
         return self.to_news_list(entities)
 
+    def save_image(self, news_id: int, image_url: str):
+        entity = NewsEntity.query.filter_by(id=news_id).one()
+        entity.image_url = image_url
+
     @staticmethod
     def to_news_list(entities: list[NewsEntity]) -> list[News]:
         return [entity.to_model() for entity in entities]

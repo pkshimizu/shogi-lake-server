@@ -39,3 +39,12 @@ class ScrapingAccessor(ScrapingRepository):
                 )
             )
         return news_entries
+
+    def scribe_image_from_site(self, url: str) -> str | None:
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, "html.parser")
+        dom = html.fromstring(str(soup))
+        og_image_list = dom.xpath("/html/head/meta[@property='og:image']")
+        for og_image in og_image_list:
+            return og_image.get("content")
+        return None
