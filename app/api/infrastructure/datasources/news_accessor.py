@@ -1,5 +1,5 @@
 from app.api.database import db
-from app.api.domain.models import NewsTag, NewsEntry
+from app.api.domain.models import NewsTag, NewsEntry, News
 from app.api.domain.repositories import NewsRepository
 from app.api.infrastructure.datasources.entities import (
     NewsTagEntity,
@@ -25,3 +25,11 @@ class NewsAccessor(NewsRepository):
         news_entity.published_at = news.published_at
         if news_entity.id is None:
             db.session.add(news_entity)
+
+    def get_all_no_image(self) -> list[News]:
+        entities = NewsEntity.query.filter(NewsEntity.image_url is None).all()
+        return self.to_news_list(entities)
+
+    @staticmethod
+    def to_news_list(entities: list[NewsEntity]) -> list[News]:
+        return [entity.to_model() for entity in entities]

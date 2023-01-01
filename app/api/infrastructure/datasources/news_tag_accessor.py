@@ -19,8 +19,8 @@ class NewsTagAccessor(NewsTagRepository):
 
     def get_all(self) -> list[NewsTag]:
         tags = NewsTagEntity.query.filter(NewsTagEntity.deleted_at is not None).all()
-        return [self.__to_news_tag(tag) for tag in tags]
+        return self.to_news_tags(tags)
 
     @staticmethod
-    def __to_news_tag(entity: NewsTagEntity) -> NewsTag:
-        return NewsTag(uid=entity.uid, name=entity.name)
+    def to_news_tags(entities: list[NewsTagEntity]) -> list[NewsTag]:
+        return [tag.to_model() for tag in entities]

@@ -7,6 +7,7 @@ from app.api.domain.models import (
     NewsEntry,
     NewsTag,
     NewsProvider,
+    News,
 )
 
 
@@ -65,6 +66,10 @@ class ScrapingRepository(metaclass=ABCMeta):
 class NewsRepository(metaclass=ABCMeta):
     @abstractmethod
     def save_news(self, news: NewsEntry, news_tags: list[NewsTag]):
+        pass
+
+    @abstractmethod
+    def get_all_no_image(self) -> list[News]:
         pass
 
 

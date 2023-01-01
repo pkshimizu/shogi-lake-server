@@ -41,6 +41,11 @@ def collect_news():
     news_collect_service.collect_hokkaido_news()
 
 
+@click.command("news:image", help="Fetch News Image")
+def fetch_news_image():
+    pass
+
+
 def setup_commands(app: Flask):
     import_commands = AppGroup("import", help="Import data")
     import_commands.add_command(import_grade)
@@ -50,5 +55,9 @@ def setup_commands(app: Flask):
     collect_commands = AppGroup("collect", help="Collect data")
     collect_commands.add_command(collect_news)
 
+    fetch_commands = AppGroup("fetch", help="Fetch data")
+    fetch_commands.add_command(fetch_news_image)
+
     app.cli.add_command(import_commands)
     app.cli.add_command(collect_commands)
+    app.cli.add_command(fetch_commands)

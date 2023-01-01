@@ -3,6 +3,7 @@ from datetime import datetime
 import shortuuid
 
 from app.api.database import db
+from app.api.domain.models import News, NewsProvider, NewsTag
 
 
 class BaseEntity:
@@ -79,6 +80,9 @@ class NewsProviderEntity(db.Model, UidEntity):
     name = db.Column(db.String(16), nullable=False)
     rss_url = db.Column(db.String(256), nullable=True)
 
+    def to_model(self):
+        return NewsProvider(uid=self.uid, name=self.name, rss_url=self.rss_url)
+
 
 news_news_tag_table = db.Table(
     "news_news_tag",
@@ -103,6 +107,16 @@ class NewsEntity(db.Model, UidEntity):
     )
     published_at = db.Column(db.DateTime, nullable=False)
 
+    def to_model(self):
+        return News(
+            uid=self.uid,
+            url=self.url,
+            title=self.title,
+            published_at=self.published_at,
+            provider=self.news_provider.to_model(),
+            tags=[tag.to_model() for tag in self.news_tags],
+        )
+
 
 class NewsTagEntity(db.Model, UidEntity):
     __tablename__ = "news_tag"
@@ -111,3 +125,6 @@ class NewsTagEntity(db.Model, UidEntity):
         "NewsEntity", secondary=news_news_tag_table, back_populates="news_tags"
     )
     name = db.Column(db.String(32), nullable=False)
+
+    def to_model(self):
+        return NewsTag(uid=self.uid, name=self.name)
