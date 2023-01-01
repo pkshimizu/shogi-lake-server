@@ -27,7 +27,7 @@ class NewsAccessor(NewsRepository):
             db.session.add(news_entity)
 
     def get_all_no_image(self) -> list[News]:
-        entities = NewsEntity.query.filter(NewsEntity.image_url is None).all()
+        entities = NewsEntity.query.filter_by(image_url=None).all()
         return self.to_news_list(entities)
 
     @staticmethod

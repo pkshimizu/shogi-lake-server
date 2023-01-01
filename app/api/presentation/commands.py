@@ -2,7 +2,7 @@ import click
 from flask import Flask
 from flask.cli import AppGroup
 
-from app.api.application import ImportService, NewsCollectService
+from app.api.application import ImportService, NewsCollectService, NewsFetchService
 
 
 @click.command("grade", help="Import Shogi Grades")
@@ -43,7 +43,10 @@ def collect_news():
 
 @click.command("news:image", help="Fetch News Image")
 def fetch_news_image():
-    pass
+    from app.api.injector import injector
+
+    news_fetch_service = injector.get(NewsFetchService)
+    news_fetch_service.fetch_image()
 
 
 def setup_commands(app: Flask):
