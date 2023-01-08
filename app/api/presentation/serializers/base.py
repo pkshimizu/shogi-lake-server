@@ -61,9 +61,9 @@ T = TypeVar("T")
 
 @dataclass
 class PaginationResponse(Response, Generic[T]):
-    def __init__(self, pagination: Pagination[T], status_code: int):
+    def __init__(self, items: list[T], pagination: Pagination, status_code: int):
         super().__init__(status_code)
-        self.items = pagination.items
+        self.items = items
         self.page = pagination.page
         self.next_page = pagination.next_page
         self.prev_page = pagination.prev_page

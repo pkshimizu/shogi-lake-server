@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.api.domain.models import Pagination, News
+from app.api.domain.models import Pagination, News, NewsTag, NewsProvider
 from app.api.presentation.serializers.base import (
     Resource,
     PaginationResponse,
@@ -10,18 +10,34 @@ from app.api.presentation.serializers.base import (
 
 @dataclass
 class NewsProviderResource(Resource):
+    def __init__(self, news_provider: NewsProvider):
+        self.uid = news_provider.uid
+        self.name = news_provider.name
+
     uid: str
     name: str
 
 
 @dataclass
 class NewsTagResource(Resource):
+    def __init__(self, news_tag: NewsTag):
+        self.uid = news_tag.uid
+        self.name = news_tag.name
+
     uid: str
     name: str
 
 
 @dataclass
 class NewsResource(Resource):
+    def __init__(self, news: News):
+        self.uid = news.uid
+        self.url = news.uid
+        self.title = news.title
+        self.published_at = self.datetime_str(news.published_at)
+        self.provider = NewsProviderResource(news.provider)
+        self.tags = [NewsTagResource(tag) for tag in news.tags]
+
     uid: str
     url: str
     title: str
@@ -41,4 +57,5 @@ class NewsListRequest(Request):
 @dataclass
 class NewsListResponse(PaginationResponse):
     def __init__(self, pagination: Pagination[News]):
-        super().__init__(pagination, 200)
+        items = [NewsResource(item) for item in pagination.items]
+        super().__init__(items, pagination, 200)
