@@ -8,6 +8,7 @@ from app.api.domain.models import (
     NewsTag,
     NewsProvider,
     News,
+    Pagination,
 )
 
 
@@ -78,6 +79,10 @@ class NewsRepository(metaclass=ABCMeta):
 
     @abstractmethod
     def save_image(self, news_id: int, image_url: str):
+        pass
+
+    @abstractmethod
+    def paginate(self, page: int, per_page: int) -> Pagination[News]:
         pass
 
 

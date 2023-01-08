@@ -1,6 +1,11 @@
 from dataclasses import dataclass
 
-from app.api.presentation.serializers.base import Response, Resource
+from app.api.domain.models import Pagination, News
+from app.api.presentation.serializers.base import (
+    Resource,
+    PaginationResponse,
+    Request,
+)
 
 
 @dataclass
@@ -25,10 +30,15 @@ class NewsResource(Resource):
     tags: list[NewsTagResource]
 
 
-@dataclass
-class NewsListResponse(Response):
+class NewsListRequest(Request):
     def __init__(self):
-        super().__init__(200)
-        self.news_list = []
+        super().__init__()
+        self.page = self.get_query_int("page", 1)
 
-    news_list: list[NewsResource]
+    page: int
+
+
+@dataclass
+class NewsListResponse(PaginationResponse):
+    def __init__(self, pagination: Pagination[News]):
+        super().__init__(pagination, 200)

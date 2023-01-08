@@ -1,5 +1,7 @@
+from sqlalchemy import desc
+
 from app.api.database import db
-from app.api.domain.models import NewsTag, NewsEntry, News
+from app.api.domain.models import NewsTag, NewsEntry, News, Pagination
 from app.api.domain.repositories import NewsRepository
 from app.api.infrastructure.datasources.entities import (
     NewsTagEntity,
@@ -33,6 +35,12 @@ class NewsAccessor(NewsRepository):
     def save_image(self, news_id: int, image_url: str):
         entity = NewsEntity.query.filter_by(id=news_id).one()
         entity.image_url = image_url
+
+    def paginate(self, page: int, per_page: int) -> Pagination[News]:
+        paginate = NewsEntity.query.order_by(desc(NewsEntity.published_at)).paginate(
+            page=page, per_page=per_page
+        )
+        return Pagination.to_model(self.to_news_list(paginate.items), paginate)
 
     @staticmethod
     def to_news_list(entities: list[NewsEntity]) -> list[News]:

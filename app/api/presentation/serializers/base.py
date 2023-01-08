@@ -1,7 +1,10 @@
 from dataclasses import dataclass, asdict
 from datetime import datetime
+from typing import Generic, TypeVar
 
 from flask import request
+
+from app.api.domain.models import Pagination
 
 
 @dataclass
@@ -11,6 +14,9 @@ class Request:
 
     def get_str(self, name: str):
         return self.request.json.get(name)
+
+    def get_query_int(self, name: str, default: int = None) -> int:
+        return int(self.request.args.get(name, default=default))
 
 
 @dataclass
@@ -48,3 +54,25 @@ class ErrorResponse(Response):
         self.message = message
 
     message: str
+
+
+T = TypeVar("T")
+
+
+@dataclass
+class PaginationResponse(Response, Generic[T]):
+    def __init__(self, pagination: Pagination[T], status_code: int):
+        super().__init__(status_code)
+        self.items = pagination.items
+        self.page = pagination.page
+        self.next_page = pagination.next_page
+        self.prev_page = pagination.prev_page
+        self.per_page = pagination.per_page
+        self.total = pagination.total
+
+    items: list[T]
+    page: int
+    next_page: int | None
+    prev_page: int | None
+    per_page: int
+    total: int

@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, date
 from enum import IntEnum
+from typing import Generic, TypeVar
 
 from dateutil.relativedelta import relativedelta
 
@@ -11,6 +12,30 @@ class PlayerGradeCategory(IntEnum):
     pro = 1
     woman = 2
     amateur = 3
+
+
+T = TypeVar("T")
+
+
+@dataclass
+class Pagination(Generic[T]):
+    items: list[T]
+    page: int
+    next_page: int | None
+    prev_page: int | None
+    per_page: int
+    total: int
+
+    @staticmethod
+    def to_model(items: list[T], paginate):
+        return Pagination(
+            items=items,
+            page=paginate.page,
+            next_page=paginate.next_num if paginate.has_next else None,
+            prev_page=paginate.prev_num if paginate.has_prev else None,
+            per_page=paginate.per_page,
+            total=paginate.total,
+        )
 
 
 @dataclass
