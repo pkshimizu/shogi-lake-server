@@ -1,17 +1,16 @@
-from flask import Flask, Blueprint
+from flask import Flask
 
 from app.api.config import load_config
 from app.api.database import setup_db
 from app.api.injector import setup_injector
 from app.api.presentation.commands import setup_commands
+from app.api.routes import setup_routes
 
 app = Flask(__name__)
 
 load_config(app)
 
-v1 = Blueprint("v1", __name__, url_prefix="/v1")
-
-app.register_blueprint(v1)
+setup_routes(app)
 
 setup_db(app)
 
