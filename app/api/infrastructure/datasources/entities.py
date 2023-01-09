@@ -142,6 +142,7 @@ class NewsEntity(db.Model, UidEntity):
             id=self.id,
             uid=self.uid,
             url=self.url,
+            image_url=self.image_url,
             title=self.title,
             published_at=self.published_at,
             provider=self.news_provider.to_model(),

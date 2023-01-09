@@ -33,6 +33,7 @@ class NewsResource(Resource):
     def __init__(self, news: News):
         self.uid = news.uid
         self.url = news.uid
+        self.image_url = news.image_url
         self.title = news.title
         self.published_at = self.datetime_str(news.published_at)
         self.provider = NewsProviderResource(news.provider)
@@ -40,6 +41,7 @@ class NewsResource(Resource):
 
     uid: str
     url: str
+    image_url: str
     title: str
     published_at: str
     provider: NewsProviderResource

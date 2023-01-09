@@ -116,6 +116,7 @@ class News:
     id: int
     uid: str
     url: str
+    image_url: str
     title: str
     published_at: datetime
     provider: NewsProvider
