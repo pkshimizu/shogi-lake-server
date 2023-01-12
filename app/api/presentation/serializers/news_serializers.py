@@ -32,7 +32,7 @@ class NewsTagResource(Resource):
 class NewsResource(Resource):
     def __init__(self, news: News):
         self.uid = news.uid
-        self.url = news.uid
+        self.url = news.url
         self.image_url = news.image_url
         self.title = news.title
         self.published_at = self.datetime_str(news.published_at)
