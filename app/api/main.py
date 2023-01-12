@@ -5,6 +5,7 @@ from app.api.database import setup_db
 from app.api.injector import setup_injector
 from app.api.presentation.commands import setup_commands
 from app.api.routes import setup_routes
+from app.api.scheduler import setup_scheduler
 
 app = Flask(__name__)
 
@@ -17,6 +18,8 @@ setup_db(app)
 setup_commands(app)
 
 setup_injector(app)
+
+setup_scheduler(app)
 
 
 @app.route("/")
